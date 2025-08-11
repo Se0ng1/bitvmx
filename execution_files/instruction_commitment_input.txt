@@ -1,3 +1,4 @@
+Entrypoint: 0x80000000
 Loading section: .text Start: 0x80000000 Size: 0x0000020c Initialized: true Flags: 110 Type: 1 
 Loading section: .text._start Start: 0x8000020c Size: 0x00000014 Initialized: true Flags: 110 Type: 1 
 Loading section: .data Start: 0x90000000 Size: 0x00000004 Initialized: true Flags: 11 Type: 1 

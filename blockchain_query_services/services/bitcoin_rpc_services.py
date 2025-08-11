@@ -41,6 +41,9 @@ class BitcoinRPCClient:
                         self._call_rpc("loadwallet", ["testwallet"])
                     else:
                         raise e2
+            elif "Multiple wallets are loaded" in e1.args[0]:
+                # Multiple wallets loaded, use specific wallet
+                self.rpc_url = f"http://{rpc_host}:{rpc_port}/wallet/testwallet"
             else:
                 raise e1
 

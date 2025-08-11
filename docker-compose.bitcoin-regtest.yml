@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  bitcoin-regtest-node:
+    image: kylemanna/bitcoind
+    container_name: bitvmx-bitcoin-regtest
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./regtestbitcoin.conf:/bitcoin/.bitcoin/bitcoin.conf
+      - bitcoin-regtest-data:/bitcoin/.bitcoin
+    command: bitcoind -conf=/bitcoin/.bitcoin/bitcoin.conf -datadir=/bitcoin/.bitcoin
+
+volumes:
+  bitcoin-regtest-data:

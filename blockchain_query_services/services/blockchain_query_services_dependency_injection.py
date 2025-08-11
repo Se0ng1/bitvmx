@@ -61,6 +61,7 @@ if common_protocol_properties.network == BitcoinNetwork.MUTINYNET:
 elif common_protocol_properties.network == BitcoinNetwork.TESTNET:
     broadcast_transaction_service = BroadcastTransactionServices.testnet()
     transaction_info_service = TransactionInfoServices.testnet()
+    faucet_service = None  # No faucet service for testnet
 elif common_protocol_properties.network == BitcoinNetwork.MAINNET:
     broadcast_transaction_service = BroadcastTransactionServices.mainnet()
     transaction_info_service = TransactionInfoServices.mainnet()

@@ -1,5 +1,3 @@
-from typing import Annotated
-
 from fastapi import APIRouter, Body
 
 from prover_app.api.v1.fund.crud.v1.view_models.post import FundPostV1Input, FundPostV1Output
@@ -26,7 +24,9 @@ router = APIRouter()
 
 @router.post("/setup")
 async def setup_post(
-    setup_post_input: SetupPostV1Input = Body(openapi_examples=setup_post_v1_input_swagger_examples)
+    setup_post_input: SetupPostV1Input = Body(
+        openapi_examples=setup_post_v1_input_swagger_examples
+    ),
 ):
     view_controller = SetupPostViewControllers.v1()
     return await view_controller(setup_post_view_input=setup_post_input)
@@ -34,7 +34,9 @@ async def setup_post(
 
 @router.post("/setup/fund")
 async def setup_fund_post(
-    setup_fund_post_input: SetupFundPostV1Input = Body(openapi_examples=setup_fund_post_v1_input_swagger_examples)
+    setup_fund_post_input: SetupFundPostV1Input = Body(
+        openapi_examples=setup_fund_post_v1_input_swagger_examples
+    ),
 ):
     view_controller = SetupFundPostViewControllers.v1()
     return await view_controller(setup_post_view_input=setup_fund_post_input)

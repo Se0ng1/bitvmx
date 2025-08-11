@@ -31,6 +31,7 @@ WORKDIR /bitvmx-backend
 
 COPY ./BitVMX-CPU ./BitVMX-CPU
 COPY ./blockchain_query_services ./blockchain_query_services
+COPY ./bitvmx_protocol_library ./bitvmx_protocol_library
 
 WORKDIR /bitvmx-backend/BitVMX-CPU
 
