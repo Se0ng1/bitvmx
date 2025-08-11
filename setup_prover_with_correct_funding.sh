@@ -26,10 +26,23 @@ print_error() {
     echo -e "${RED}[✗]${NC} $1"
 }
 
-# Configuration
-SECRET_ORIGIN_OF_FUNDS="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+# Configuration - Generate random secret for each run to avoid reuse issues
+print_info "Generating new random secret..."
+SECRET_ORIGIN_OF_FUNDS=$(openssl rand -hex 32)
+print_status "Generated secret: ${SECRET_ORIGIN_OF_FUNDS:0:8}..."
+
 PROVER_DESTINATION="bcrt1ql3e9pgs3mmwuwrh95fecme0s0qtn2880hlwwpw"
-PROVER_SIG_PUBKEY="0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+
+# Generate public key from the random secret
+print_info "Generating public key from secret..."
+PROVER_SIG_PUBKEY=$(docker exec bitvmx-prover-backend-1 python3 -c "
+from bitcoinutils.setup import setup
+from bitcoinutils.keys import PrivateKey
+setup('regtest')
+private_key = PrivateKey(secret_exponent=0x${SECRET_ORIGIN_OF_FUNDS})
+print(private_key.get_public_key().to_hex())
+" 2>/dev/null)
+print_status "Generated public key: ${PROVER_SIG_PUBKEY:0:16}..."
 
 # Step 1: Get the actual address from secret_origin_of_funds
 print_info "Deriving address from secret_origin_of_funds..."

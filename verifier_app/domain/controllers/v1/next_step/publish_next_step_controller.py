@@ -97,21 +97,42 @@ class PublishNextStepController:
             trigger_protocol_transaction_service = self.trigger_protocol_transaction_service_class(
                 verifier_private_key=winternitz_verifier_private_key
             )
-            last_confirmed_step_tx = trigger_protocol_transaction_service(
-                hash_result_transaction=hash_result_transaction,
-                bitvmx_protocol_setup_properties_dto=bitvmx_protocol_setup_properties_dto,
-                bitvmx_protocol_verifier_dto=bitvmx_protocol_verifier_dto,
-            )
-            bitvmx_protocol_verifier_dto.last_confirmed_step_tx_id = (
-                last_confirmed_step_tx.get_txid()
-            )
-            bitvmx_protocol_verifier_dto.last_confirmed_step = (
-                TransactionVerifierStepType.TRIGGER_PROTOCOL
-            )
+            try:
+                last_confirmed_step_tx = trigger_protocol_transaction_service(
+                    hash_result_transaction=hash_result_transaction,
+                    bitvmx_protocol_setup_properties_dto=bitvmx_protocol_setup_properties_dto,
+                    bitvmx_protocol_verifier_dto=bitvmx_protocol_verifier_dto,
+                )
+                bitvmx_protocol_verifier_dto.last_confirmed_step_tx_id = (
+                    last_confirmed_step_tx.get_txid()
+                )
+                bitvmx_protocol_verifier_dto.last_confirmed_step = (
+                    TransactionVerifierStepType.TRIGGER_PROTOCOL
+                )
+            except Exception as e:
+                if "both hashes are equal" in str(e):
+                    # Protocol successfully verified - hashes match, no challenge needed
+                    bitvmx_protocol_verifier_dto.last_confirmed_step = (
+                        TransactionVerifierStepType.TRIGGER_PROTOCOL
+                    )
+                    bitvmx_protocol_verifier_dto.last_confirmed_step_tx_id = "VERIFIED_NO_CHALLENGE"
+                    # Save the verification result
+                    self.bitvmx_protocol_verifier_dto_persistence.update(
+                        setup_uuid=setup_uuid,
+                        bitvmx_protocol_verifier_dto=bitvmx_protocol_verifier_dto,
+                    )
+                    return TransactionVerifierStepType.TRIGGER_PROTOCOL
+                else:
+                    raise
         elif (
             bitvmx_protocol_verifier_dto.last_confirmed_step
             is TransactionVerifierStepType.TRIGGER_PROTOCOL
         ):
+            # Check if verification was already completed (no challenge needed)
+            if bitvmx_protocol_verifier_dto.last_confirmed_step_tx_id == "VERIFIED_NO_CHALLENGE":
+                # Protocol is complete - no further steps needed
+                return TransactionVerifierStepType.TRIGGER_PROTOCOL
+            
             # VERIFY THE PREVIOUS STEP #
             winternitz_verifier_private_key = PrivateKey(
                 b=bytes.fromhex(bitvmx_protocol_verifier_private_dto.winternitz_private_key)
