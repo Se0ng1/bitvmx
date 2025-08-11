@@ -132,7 +132,7 @@ class PublishNextStepController:
             if bitvmx_protocol_verifier_dto.last_confirmed_step_tx_id == "VERIFIED_NO_CHALLENGE":
                 # Protocol is complete - no further steps needed
                 return TransactionVerifierStepType.TRIGGER_PROTOCOL
-            
+
             # VERIFY THE PREVIOUS STEP #
             winternitz_verifier_private_key = PrivateKey(
                 b=bytes.fromhex(bitvmx_protocol_verifier_private_dto.winternitz_private_key)

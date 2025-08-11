@@ -31,8 +31,8 @@ print_info() {
 # Start Bitcoin regtest node
 start_bitcoin() {
     print_info "Starting Bitcoin regtest node..."
-    docker compose -f docker-compose.bitcoin-regtest.yml down -v 2>/dev/null || true
-    docker compose -f docker-compose.bitcoin-regtest.yml up -d
+    docker compose down bitcoin-regtest-node -v 2>/dev/null || true
+    docker compose up bitcoin-regtest-node -d
     print_status "Bitcoin regtest node started"
     
     # Wait for node to be ready
@@ -118,7 +118,7 @@ main() {
     print_info "RPC Password: SomeDecentp4ssw0rd"
     echo ""
     print_info "To view logs: docker logs -f bitvmx-bitcoin-regtest"
-    print_info "To stop: docker compose -f docker-compose.bitcoin-regtest.yml down"
+    print_info "To stop: docker compose down bitcoin-regtest-node"
     echo ""
 }
 
@@ -126,12 +126,12 @@ main() {
 case "${1:-}" in
     stop)
         print_info "Stopping Bitcoin node..."
-        docker compose -f docker-compose.bitcoin-regtest.yml down
+        docker compose down bitcoin-regtest-node
         print_status "Bitcoin node stopped"
         ;;
     clean)
         print_info "Cleaning up..."
-        docker compose -f docker-compose.bitcoin-regtest.yml down -v
+        docker compose down bitcoin-regtest-node -v
         print_status "Cleanup complete"
         ;;
     logs)
