@@ -18,8 +18,10 @@ class ExecutionTraceCommitmentGenerationService:
         mapping_dict = {}
         pattern = r'Key:\s*(\w+),\s*Script:\s*"([^"]+)"'
         for line in mapping_lines:
+            # Skip lines that don't match the pattern (like Entrypoint line)
             match = re.search(pattern, line)
-            mapping_dict[match.group(1)] = match.group(2)
+            if match:
+                mapping_dict[match.group(1)] = match.group(2)
 
         with open(instruction_commitment_path) as commitment_file:
             commitment_lines = commitment_file.readlines()

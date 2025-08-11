@@ -1,0 +1,10 @@
+Entrypoint: 0x80000000
+Loading section: .text Start: 0x80000000 Size: 0x0000020c Initialized: true Flags: 110 Type: 1 
+Loading section: .text._start Start: 0x8000020c Size: 0x00000014 Initialized: true Flags: 110 Type: 1 
+Loading section: .data Start: 0x90000000 Size: 0x00000004 Initialized: true Flags: 11 Type: 1 
+Loading section: .bss Start: 0xa0000000 Size: 0x00001004 Initialized: false Flags: 11 Type: 1000 
+Loading section: .stack Start: 0xe0000000 Size: 0x00800000 Initialized: false Flags: 11 Type: 1000 
+Loading section: .input Start: 0xaa000000 Size: 0x00002000 Initialized: false Flags: 11 Type: 1000 
+Loading section: .registers Start: 0xf0000000 Size: 0x00000200 Initialized: false Flags: 11 Type: 1000 
+PC: 0x80000000 Micro: 0 Opcode: 0x06054063 Key: blt
+PC: 0x80000004 Micro: 0 Opcode: 0x0605c663 Key: blt
