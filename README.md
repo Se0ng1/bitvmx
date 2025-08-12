@@ -38,15 +38,12 @@ To build the project, follow these steps:
 
    `docker compose up`
    
-4. Open the prover Swagger UI at `http://0.0.0.0:8081/docs`.
 
-5. Generate a setup by executing the endpoint (EP) `api/v1/setup/fund/`. This will both get some funds from the mutinynet faucet and perform the setup ceremony. At the end, you'll see the transaction that locks the funds.
-
-6. Take the `setup_uuid` from the response and call the EP `/api/v1/input` to set the input in the prover's server.
+4. Take the `setup_uuid` from the response and call the EP `/api/v1/input` to set the input in the prover's server.
 
    Note: In a real-world scenario, the program will most likely contain a STARK verifier. The light client that will compute the proof to free the funds will run independently. Once the proof is generated, it is uploaded using this EP.
 
-7. Once the input is available, call the EP `/api/v1/next_step` with the correct `setup_uuid`. 
+5. Once the input is available, call the EP `/api/v1/next_step` with the correct `setup_uuid`. 
 
     Note: In a real-world scenario, the `next_step` function would be a cron job executed at regular intervals to check the blockchain for messages from the counterparty that need a response. However, to simplify the current implementation, the `/api/v1/next_step` EP is used as a trigger mechanism. Once this EP has been processed, the analogous EP in the verifier is called. This process is repeated, allowing the protocol to run much faster. Since everything is dockerized and packaged, changing this behavior is straightforward.
 
