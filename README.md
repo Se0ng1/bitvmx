@@ -36,9 +36,7 @@ To build the project, follow these steps:
 
 3. Start both microservices:
 
-   a. `docker compose up prover-backend`
-   
-   b. `docker compose up verifier-backend`
+   `docker compose up`
    
 4. Open the prover Swagger UI at `http://0.0.0.0:8081/docs`.
 
